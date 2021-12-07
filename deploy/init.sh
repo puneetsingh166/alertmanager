@@ -22,5 +22,5 @@ cd
 git clone https://github.com/prometheus/alertmanager.git
 cd alertmanager
 make build
-./alertmanager --config.file="deploy/config/alertmanager.yml"
+./alertmanager --config.file="deploy/alertmanager.yml"
 
