@@ -19,8 +19,7 @@ apt-get -y install nodejs
 
 echo "--------------get clone_prometheus_alert_manager repo ---------------------------"
 cd
-git clone https://github.com/prometheus/alertmanager.git
+git clone https://github.com/puneetsingh166/alertmanager.git
 cd alertmanager
 make build
 ./alertmanager --config.file="deploy/alertmanager.yml"
-
