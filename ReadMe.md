@@ -2,17 +2,26 @@
 
 
 ## Table Of Contents
-1. [Architecture](#desc)
-2. [Prometheus server.](#desc1)
-3. [Prometheus targets](#desc2)
-4. [Alertmanager](#desc3)
+1. [What is Prometheus](#desc11)
+2. [Architecture](#desc)
+3. [Prometheus server.](#desc1)
+4. [Prometheus targets](#desc2)
+5. [Alertmanager](#desc3)
+
+<a name="desc11"></a>
+## What is Prometheus
+Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud. Since its inception in 2012, many companies and organizations have adopted Prometheus, and the project has a very active developer and user community. It is now a standalone open source project and maintained independently of any company. To emphasize this, and to clarify the project's governance structure, Prometheus joined the Cloud Native Computing Foundation in 2016 as the second hosted project, after Kubernetes.
+
+Prometheus collects and stores its metrics as time series data, i.e. metrics information is stored with the timestamp at which it was recorded, alongside optional key-value pairs called labels.
+
+For more elaborate overviews of Prometheus, see the resources linked from the media section.
 
 <a name="desc"></a>
 ## Architecture.
 This diagram illustrates the architecture of Prometheus and some of its ecosystem components:
 
 
------------------------------------
+![Screenshot from 2021-12-07 19-09-50](https://user-images.githubusercontent.com/90913214/145039662-16cb32ea-1ce5-4a74-8b18-585775d89290.png)
 
 
 Prometheus scrapes metrics from instrumented jobs, either directly or via an intermediary push gateway for short-lived jobs. It stores all scraped samples locally and runs rules over this data to either aggregate and record new time series from existing data or generate alerts. Grafana or other API consumers can be used to visualize the collected data.
@@ -20,8 +29,9 @@ Prometheus scrapes metrics from instrumented jobs, either directly or via an int
 ## Prometheus server.
 This is the main core.
 Before do the setup we need to write our own config.yml file first.
-To learn about how to write your own config.yml file https://prometheus.io/docs/prometheus/latest/configuration/configuration/
-Example file - https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml
+To learn about how to write your own config.yml file 
+[Here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
+[Example file](https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml)
 And define set of rules in config.yml file .
 
 How to install and run Prometheus server in locally in ubuntu.
@@ -30,7 +40,8 @@ How to install and run Prometheus server in locally in ubuntu.
     * git
     * curl
     * tar
-``` apt-get install --no-install-recommends -yq software-properties-common \
+``` 
+apt-get install --no-install-recommends -yq software-properties-common \
     curl \
     git \
     tar \
@@ -50,16 +61,20 @@ curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 apt-get -y install nodejs
 ```
 4. Clone prometheus repo
-``` git clone https://github.com/prometheus/prometheus.git ```
+
+```
+git clone https://github.com/prometheus/prometheus.git 
+```
 5. make build
 ```
 cd prometheus
 make build
 ```
 6. Run config file 
-```./prometheus --config.file="your file path"```
-### Here is automate installation of prometheus using shell script.
-https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh
+```
+./prometheus --config.file="your file path"
+```
+### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation of prometheus using shell script.
 
 <a name="desc2"></a>
 ## Prometheus targets
@@ -84,8 +99,8 @@ ONOMY_KEYRING_FLAG="--keyring-backend test"
 ## Alertmanager
 ALert manager to send alert abou
 Before install and run alert manager we need to write config file for alert manager.
-Here is the link How to write config file for alert manager - https://prometheus.io/docs/alerting/latest/configuration/
-Example - https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh
+[Here](https://prometheus.io/docs/alerting/latest/configuration/) is the link How to write config file for alert manager 
+[Example](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh)
 How to install and run alert manager - .
 
 1. First of all install all dependencies    
@@ -93,7 +108,8 @@ How to install and run alert manager - .
     * git
     * curl
     * tar
-``` apt-get install --no-install-recommends -yq software-properties-common \
+``` 
+apt-get install --no-install-recommends -yq software-properties-common \
     curl \
     git \
     tar \
@@ -113,7 +129,9 @@ curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 apt-get -y install nodejs
 ```
 4. Clone prometheus repo
-``` git clone https://github.com/prometheus/alertmanager ```
+```
+git clone https://github.com/prometheus/alertmanager 
+```
 5. make build
 ```
 cd alertmanager
@@ -121,9 +139,7 @@ cd alertmanager
 make build
 ```
 6. Run config file 
+```./alertmanager --config.file=your yml file.
 ```
-./alertmanager --config.file=your yml file.
-```
-### Here is automate installation of alertmanager using shell script.
-https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh
+### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation of alertmanager using shell script.
 
