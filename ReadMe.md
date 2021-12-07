@@ -97,8 +97,19 @@ ONOMY_KEYRING_FLAG="--keyring-backend test"
 
 <a name="desc3"></a>
 ## Alertmanager
-ALert manager to send alert abou
-Before install and run alert manager we need to write config file for alert manager.
+Alerting with Prometheus is separated into two parts. Alerting rules in Prometheus servers send alerts to an Alertmanager. The Alertmanager then manages those alerts, including silencing, inhibition, aggregation and sending out notifications via methods such as email, on-call notification systems, and chat platforms.
+
+The main steps to setting up alerting and notifications are:
+
+* Setup and configure the Alertmanager
+* Configure Prometheus to talk to the Alertmanager
+* Create alerting rules in Prometheus
+
+
+The Alertmanager handles alerts sent by client applications such as the Prometheus server. It takes care of deduplicating, grouping, and routing them to the correct receiver integration such as email, PagerDuty, or OpsGenie. It also takes care of silencing and inhibition of alerts.
+
+ ALert manager to send alert abou
+ Before install and run alert manager we need to write config file for alert manager.
 [Here](https://prometheus.io/docs/alerting/latest/configuration/) is the link How to write config file for alert manager 
 [Example](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh)
 How to install and run alert manager - .
