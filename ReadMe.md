@@ -136,18 +136,26 @@ Go to the expression browser and verify that Prometheus now has information abou
 Jobs/exporters - 
 exporters required validator's Name and address for configuration.
 How to install and run Prometheus server for onomyd artifact in locally where you node is running and how to config exporters with validator .
-1. Basic config
+NOTE - This config and install required that machine where your onomy node is running.
+1. Clone Cosmos-IE repo. but if you clone ```https://github.com/node-a-team/Cosmos-IE ``` this repo , so you need to do some change in this repo and add onomy --------.
+Use this repo. already having onomy configurations ``` https://github.com/sunnyk56/Cosmos-IE ```
 ```
-# onomy artifacts
-ONOMY=onomyd
-# onomy artifacts
-CHAIN_PROTOCOL=onomy
-# onomy home directory
-ONOMY_HOME=$HOME/.onomy
-# Keyring flag
-ONOMY_KEYRING_FLAG="--keyring-backend test"
+  git clone https://github.com/sunnyk56/Cosmos-IE.git
 ```
-2. clone exporter repo
+2. Before build and run the exporter you have to need "Validator Address".
+  
+3. Create build
+ ```
+  cd Cosmos-IE
+  go build
+```
+4. Run the exporter
+```
+// $CHAIN_PROTOCOL = onomy
+./Cosmos-IE run --chain $CHAIN_PROTOCOL --oper-addr $Validator_address --port 9100  
+```
+### [Here](https://github.com/sunnyk56/Cosmos-IE/blob/master/deploy/init.sh) is automate installation's script of exporters.
+
 
 
 <a name="desc3"></a>
