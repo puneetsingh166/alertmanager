@@ -1,4 +1,4 @@
-# Systems monitoring tool
+# Prometheus Monitoring Tool
 
 
 ## Table Of Contents
