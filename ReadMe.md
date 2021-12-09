@@ -55,7 +55,7 @@ scrape_configs:
       - targets: ['localhost:9090']
   ```
  * For a complete specification of configuration options, see the [configuration documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
-Before do the setup we need to write our own config.yml file first.
+* Before do the setup we need to write our own config.yml file first.
 [Example config file](https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml)
 And also define set of rules in config.yml file .
 
@@ -99,7 +99,37 @@ make build
 ```
 ./prometheus --config.file="your file path"
 ```
-### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation script file of prometheus.
+### NOTE - [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation script file of prometheus.
+ 
+ * Prometheus should start up. You should also be able to browse to a status page about itself at http://localhost:9090 . Give it a couple of seconds to collect data about itself from its own HTTP metrics endpoint.
+ * You can also verify that Prometheus is serving metrics about itself by navigating to its metrics endpoint: http://localhost:9090/metrics
+
+* Let us explore data that Prometheus has collected about itself. To use Prometheus's built-in expression browser, navigate to http://localhost:9090/graph and choose the "Console" view within the "Graph" tab.
+* As you can gather from http://localhost:9090/metrics, one metric that Prometheus exports about itself is named prometheus_target_interval_length_seconds (the actual amount of time between target scrapes). Enter the below into the expression console and then click "Execute":
+ 
+### Configure Prometheus to monitor the sample targets
+Now we will configure Prometheus to scrape these new targets. Let's group all three endpoints into one job called node. We will imagine that the first two endpoints are production targets, while the third one represents a canary instance. To model this in Prometheus, we can add several groups of endpoints to a single job, adding extra labels to each group of targets. In this example, we will add the group="production" label to the first group of targets, while adding group="canary" to the second.
+
+To achieve this, add the following job definition to the scrape_configs section in your prometheus.yml and restart your Prometheus instance:
+```
+  scrape_configs:
+  - job_name:       'node'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['localhost:8080', 'localhost:8081']
+        labels:
+          group: 'production'
+
+      - targets: ['localhost:8082']
+        labels:
+          group: 'canary'
+```
+Go to the expression browser and verify that Prometheus now has information about time series that these example endpoints expose, such as node_cpu_seconds_total.
+
+
 
 <a name="desc2"></a>
 ## Prometheus targets
@@ -122,7 +152,10 @@ ONOMY_KEYRING_FLAG="--keyring-backend test"
 
 <a name="desc3"></a>
 ## Alertmanager
+ 
 Alerting with Prometheus is separated into two parts. Alerting rules in Prometheus servers send alerts to an Alertmanager. The Alertmanager then manages those alerts, including silencing, inhibition, aggregation and sending out notifications via methods such as email, on-call notification systems, and chat platforms.
+ 
+
 
 The main steps to setting up alerting and notifications are:
 
@@ -133,10 +166,9 @@ The main steps to setting up alerting and notifications are:
 
 The Alertmanager handles alerts sent by client applications such as the Prometheus server. It takes care of deduplicating, grouping, and routing them to the correct receiver integration such as email, PagerDuty, or OpsGenie. It also takes care of silencing and inhibition of alerts.
 
- ALert manager to send alert abou
  Before install and run alert manager we need to write config file for alert manager.
 [Here](https://prometheus.io/docs/alerting/latest/configuration/) is the link How to write config file for alert manager 
-[Example](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh)
+[Example File](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh)
 How to install and run alert manager - .
 
 1. First of all install all dependencies    
@@ -177,5 +209,6 @@ make build
 6. Run config file 
 ```./alertmanager --config.file=your yml file.
 ```
-### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation of alertmanager using shell script.
+### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation's script of alertmanager.
+* Alert manager should start up. You should also be able to browse to a status page about itself at http://localhost:9093 
 
