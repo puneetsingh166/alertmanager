@@ -103,7 +103,9 @@ The Alertmanager handles alerts sent by client applications such as the Promethe
 
  Before install and run alert manager we need to write config file for alert manager.
 [Here](https://prometheus.io/docs/alerting/latest/configuration/) is the link How to write config file for alert manager 
+
 [Example File](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/alertmanager.yml)
+
 To install and run alert manager [use this script](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh) .
 * Alert manager should start up. You should also be able to browse to a status page about itself at http://localhost:9093 
 
