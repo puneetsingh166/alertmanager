@@ -12,5 +12,5 @@ receivers:
     smarthost: smtp.gmail.com:587
     auth_username: abctesting166@gmail.com
     auth_identity: abctesting166@gmail.com
-    auth_password: bbdxuwwfmjyofuxm
+    auth_password: XXXXXXXXXXXX
     send_resolved: true
