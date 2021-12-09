@@ -59,47 +59,8 @@ scrape_configs:
 [Example config file](https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml)
 And also define set of rules in config.yml file .
 
-How to install and run Prometheus server in locally in ubuntu.
-1. First of all install all dependencies    
-    * make
-    * git
-    * curl
-    * tar
-``` 
-apt-get install --no-install-recommends -yq software-properties-common \
-    curl \
-    git \
-    tar \
-    make
-```
-2. Install and set golang in env variable.
-```
-curl https://dl.google.com/go/go1.16.4.linux-amd64.tar.gz --output go.tar.gz
-tar -C $HOME -xzf go.tar.gz
-PATH="$HOME/go/bin:$PATH"
-GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-```
-3. Install node & npm 
-```
-curl -sL https://deb.nodesource.com/setup_16.x  | bash -
-apt-get -y install nodejs
-```
-4. Clone prometheus repo
-
-```
-git clone https://github.com/prometheus/prometheus.git 
-```
-5. make build
-```
-cd prometheus
-make build
-```
-6. Run config file 
-```
-./prometheus --config.file="your file path"
-```
-### NOTE - [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation script file of prometheus.
+### To install and run Prometheus server in locally in ubuntu [use this script](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh)
+#### After build, Run config file in your terminal using this command ``` ./prometheus --config.file="your file path" ```
  
  * Prometheus should start up. You should also be able to browse to a status page about itself at http://localhost:9090 . Give it a couple of seconds to collect data about itself from its own HTTP metrics endpoint.
  * You can also verify that Prometheus is serving metrics about itself by navigating to its metrics endpoint: http://localhost:9090/metrics
@@ -107,54 +68,20 @@ make build
 * Let us explore data that Prometheus has collected about itself. To use Prometheus's built-in expression browser, navigate to http://localhost:9090/graph and choose the "Console" view within the "Graph" tab.
 * As you can gather from http://localhost:9090/metrics, one metric that Prometheus exports about itself is named prometheus_target_interval_length_seconds (the actual amount of time between target scrapes). Enter the below into the expression console and then click "Execute":
  
-### Configure Prometheus to monitor the sample targets
-Now we will configure Prometheus to scrape these new targets. Let's group all three endpoints into one job called node. We will imagine that the first two endpoints are production targets, while the third one represents a canary instance. To model this in Prometheus, we can add several groups of endpoints to a single job, adding extra labels to each group of targets. In this example, we will add the group="production" label to the first group of targets, while adding group="canary" to the second.
-
-To achieve this, add the following job definition to the scrape_configs section in your prometheus.yml and restart your Prometheus instance:
-```
-  scrape_configs:
-  - job_name:       'node'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
-
-    static_configs:
-      - targets: ['localhost:8080', 'localhost:8081']
-        labels:
-          group: 'production'
-
-      - targets: ['localhost:8082']
-        labels:
-          group: 'canary'
-```
-Go to the expression browser and verify that Prometheus now has information about time series that these example endpoints expose, such as node_cpu_seconds_total.
-
-
 
 <a name="desc2"></a>
 ## Prometheus targets
-Jobs/exporters - 
-exporters required validator's Name and address for configuration.
-How to install and run Prometheus server for onomyd artifact in locally where you node is running and how to config exporters with validator .
-NOTE - This config and install required that machine where your onomy node is running.
-1. Clone Cosmos-IE repo. but if you clone ```https://github.com/node-a-team/Cosmos-IE ``` this repo , so you need to do some change in this repo and add onomy --------.
-Use this repo. already having onomy configurations ``` https://github.com/sunnyk56/Cosmos-IE ```
-```
-  git clone https://github.com/sunnyk56/Cosmos-IE.git
-```
-2. Before build and run the exporter you have to need "Validator Address".
+Jobs/exporters - Exporters extract data of node,system. Prometheus pull the data from exporters and saved in DB.so then we can visualize the node's and system's data in graphical or numberical form via prometheus.
   
-3. Create build
- ```
-  cd Cosmos-IE
-  go build
-```
-4. Run the exporter
-```
-// $CHAIN_PROTOCOL = onomy
-./Cosmos-IE run --chain $CHAIN_PROTOCOL --oper-addr $Validator_address --port 9100  
-```
-### [Here](https://github.com/sunnyk56/Cosmos-IE/blob/master/deploy/init.sh) is automate installation's script of exporters.
+There are two type of exporters 
+  1. System exporter.
+  2. Node exporter.
+
+We are discussing about node exporter.
+
+To install and run exporter for onomyd artifact in locally , where you node is running and config exporters with validator for all things [use this script file](https://github.com/sunnyk56/Cosmos-IE/blob/master/deploy/init.sh)
+
+### NOTE - This config and install required that machine where your onomy node is running.
 
 
 
@@ -176,47 +103,7 @@ The Alertmanager handles alerts sent by client applications such as the Promethe
 
  Before install and run alert manager we need to write config file for alert manager.
 [Here](https://prometheus.io/docs/alerting/latest/configuration/) is the link How to write config file for alert manager 
-[Example File](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh)
-How to install and run alert manager - .
-
-1. First of all install all dependencies    
-    * make
-    * git
-    * curl
-    * tar
-``` 
-apt-get install --no-install-recommends -yq software-properties-common \
-    curl \
-    git \
-    tar \
-    make
-```
-2. Install and set golang in env variable.
-```
-curl https://dl.google.com/go/go1.16.4.linux-amd64.tar.gz --output go.tar.gz
-tar -C $HOME -xzf go.tar.gz
-PATH="$HOME/go/bin:$PATH"
-GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-```
-3. Install node & npm 
-```
-curl -sL https://deb.nodesource.com/setup_16.x  | bash -
-apt-get -y install nodejs
-```
-4. Clone prometheus repo
-```
-git clone https://github.com/prometheus/alertmanager 
-```
-5. make build
-```
-cd alertmanager
-```
-make build
-```
-6. Run config file 
-```./alertmanager --config.file=your yml file.
-```
-### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation's script of alertmanager.
+[Example File](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/alertmanager.yml)
+To install and run alert manager [use this script](https://github.com/puneetsingh166/alertmanager/blob/main/deploy/init.sh) .
 * Alert manager should start up. You should also be able to browse to a status page about itself at http://localhost:9093 
 
