@@ -14,7 +14,6 @@ Prometheus is an open-source systems monitoring and alerting toolkit originally 
 
 Prometheus collects and stores its metrics as time series data, i.e. metrics information is stored with the timestamp at which it was recorded, alongside optional key-value pairs called labels.
 
-For more elaborate overviews of Prometheus, see the resources linked from the media section.
 
 <a name="desc"></a>
 ## Architecture.
@@ -27,12 +26,38 @@ This diagram illustrates the architecture of Prometheus and some of its ecosyste
 Prometheus scrapes metrics from instrumented jobs, either directly or via an intermediary push gateway for short-lived jobs. It stores all scraped samples locally and runs rules over this data to either aggregate and record new time series from existing data or generate alerts. Grafana or other API consumers can be used to visualize the collected data.
 <a name="desc1"></a>
 ## Prometheus server.
-This is the main core.
+
+* This is the main core.
+
+* You will download and run Prometheus locally, configure it to scrape itself and an example application, then work with queries, rules, and graphs to use collected time series data.
+* Before starting Prometheus, let's configure it.
+* Prometheus collects metrics from targets by scraping metrics HTTP endpoints. Since Prometheus exposes data in the same manner about itself, it can also scrape and monitor its own health.
+* While a Prometheus server that collects only data about itself is not very useful, it is a good starting example. Save the following basic Prometheus configuration as a file named <NAME>.yml:
+```
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'codelab-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['localhost:9090']
+  ```
+ * For a complete specification of configuration options, see the [configuration documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 Before do the setup we need to write our own config.yml file first.
-To learn about how to write your own config.yml file 
-[Here](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
-[Example file](https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml)
-And define set of rules in config.yml file .
+[Example config file](https://github.com/sunnyk56/prometheus/blob/main/deploy/config/config.yml)
+And also define set of rules in config.yml file .
 
 How to install and run Prometheus server in locally in ubuntu.
 1. First of all install all dependencies    
@@ -74,7 +99,7 @@ make build
 ```
 ./prometheus --config.file="your file path"
 ```
-### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation of prometheus using shell script.
+### [Here](https://github.com/sunnyk56/prometheus/blob/main/deploy/ubuntu/init.sh) is automate installation script file of prometheus.
 
 <a name="desc2"></a>
 ## Prometheus targets
