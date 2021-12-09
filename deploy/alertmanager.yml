@@ -7,10 +7,10 @@ route:
 receivers:
 - name: 'gmail-notifications'
   email_configs:
-  - to: puneet@leewayhertz.com
-    from: abctesting166@gmail.com
+  - to: xxx@mail.com
+    from: XXX@mail.com
     smarthost: smtp.gmail.com:587
-    auth_username: abctesting166@gmail.com
-    auth_identity: abctesting166@gmail.com
+    auth_username: XXX@mail.com
+    auth_identity: XXX@gmail.com
     auth_password: XXXXXXXXXXXX
     send_resolved: true
